@@ -45,3 +45,4 @@ slice: ## execute prusa-slicer so gcode can be generated
 	prusa-slicer generated/$$(basename ${app} .py).stl
 
 clean: ## clean files
+	rm -rf __pycache__
