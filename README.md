@@ -5,12 +5,14 @@
 Run `make` to see the various targets:
 
 ```
-(cq-dev) wink@3900x:~/prgs/CadQuery/projects/grant/t1
 $ make
+<targets>:
+help                 This help, default if no target
 format               Format
 p                    Run with python
 e                    Run with cq-editor
 mypy                 check with mypy
 t                    test
+slice                execute prusa-slicer so gcode can be generated
 clean                clean files
 ```

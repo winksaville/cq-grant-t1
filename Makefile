@@ -8,6 +8,7 @@ app=t1.py
 define PRINT_HELP_PYSCRIPT
 import re, sys
 
+print("<targets>:")
 for line in sys.stdin:
 	match = re.match(r'^([a-zA-Z_-]+):.*?## (.*)$$', line)
 	if match:
@@ -16,7 +17,7 @@ for line in sys.stdin:
 endef
 export PRINT_HELP_PYSCRIPT
 
-help:
+help: ## This help, default if no target
 	@python -c "$$PRINT_HELP_PYSCRIPT" < $(MAKEFILE_LIST)
 
 
@@ -40,7 +41,7 @@ mypy: ## check with mypy
 t: ## test
 	pytest
 
-slice:
+slice: ## execute prusa-slicer so gcode can be generated
 	prusa-slicer generated/$$(basename ${app} .py).stl
 
 clean: ## clean files
