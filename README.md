@@ -1,4 +1,4 @@
-# Test 1 for grant
+# Test 1 for Grant
 
 ## Build:
 
