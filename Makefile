@@ -1,4 +1,4 @@
-.PHONY: help, format, f, p, e, mypy, t, clean, slice
+.PHONY: help, f, p, e, mypy, t, clean, slice
 
 .DEFAULT_GOAL := help
 
@@ -20,29 +20,27 @@ export PRINT_HELP_PYSCRIPT
 help: ## This help, default if no target
 	@python -c "$$PRINT_HELP_PYSCRIPT" < $(MAKEFILE_LIST)
 
-
-format: f ## Format
-f:
+f: ## Format with isort, black and flake8
 	isort *.py cq-bolt cq-nut
 	black *.py cq-bolt cq-nut
 	flake8 *.py cq-bolt cq-nut
 
-p: ## Run with python
+p: ## Run xxx with python using "make p app=xxx"
 	@if [ "${app}" == "" ]; then echo "Expecting 'app=xxx'"; exit 1; fi
 	python ${app}
 
-e: ## Run with cq-editor
+e: ## Run xxx with cq-editor using "make e app=xxx"
 	@if [ "${app}" == "" ]; then echo "Expecting 'app=xxx'"; exit 1; fi
 	cq-editor ${app}
 
-mypy: ## check with mypy
+mypy: ## Check with mypy
 	mypy *.py
 
-t: ## test
+t: ## Test with pytest
 	pytest
 
-slice: ## execute prusa-slicer so gcode can be generated
+slice: ## Execute prusa-slicer so gcode can be generated
 	prusa-slicer generated/$$(basename ${app} .py).stl
 
-clean: ## clean files
-	rm -rf __pycache__
+clean: ## Clean files
+	rm -rf __pycache__ .pytest_cache .mypy_cache
