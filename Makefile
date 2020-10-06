@@ -1,5 +1,3 @@
-.PHONY: help, f, p, e, mypy, t, clean, slice
-
 .DEFAULT_GOAL := help
 
 author="Wink Saville"
@@ -17,30 +15,40 @@ for line in sys.stdin:
 endef
 export PRINT_HELP_PYSCRIPT
 
+.PHONY: help
 help: ## This help, default if no target
 	@python -c "$$PRINT_HELP_PYSCRIPT" < $(MAKEFILE_LIST)
 
-f: ## Format with isort, black and flake8
+.PHONY: f, format
+f: format ## Format with isort, black and flake8
+format: ## Format with isort, black and flake8
 	isort *.py cq-bolt cq-nut
 	black *.py cq-bolt cq-nut
 	flake8 *.py cq-bolt cq-nut
 
+.PHONY: p
 p: ## Run xxx with python using "make p app=xxx"
 	@if [ "${app}" == "" ]; then echo "Expecting 'app=xxx'"; exit 1; fi
 	python ${app}
 
+.PHONY: e
 e: ## Run xxx with cq-editor using "make e app=xxx"
 	@if [ "${app}" == "" ]; then echo "Expecting 'app=xxx'"; exit 1; fi
 	cq-editor ${app}
 
+.PHONY: mypy
 mypy: ## Check with mypy
 	mypy *.py
 
-t: ## Test with pytest
+.PHONY: t, test
+t: test ## Test with pytest
+test: ## Test with pytest
 	pytest
 
+.PHONY: slice
 slice: ## Execute prusa-slicer so gcode can be generated
 	prusa-slicer generated/$$(basename ${app} .py).stl
 
+.PHONY: clean
 clean: ## Clean files
 	rm -rf __pycache__ .pytest_cache .mypy_cache
